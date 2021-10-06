@@ -12,15 +12,16 @@ Feature: Contacts page
     And the user enters the sales manager information
     When the user navigates to "Activities" "Calendar Events"
     Then the title contains "Calendars"
-    #added "s" at the end of the calendar to fail
+   #added "s" at the end of calendar to fail
 
-  Scenario: Menu Options
+  Scenario: Menu Options Driver
     Given the user logged in as "driver"
     Then the user should see following options
       | Fleet      |
       | Customers  |
       | Activities |
       | System     |
+
 
 
   Scenario: Menu Options Sales Manager
@@ -34,6 +35,16 @@ Feature: Contacts page
       | Marketing          |
       | Reports & Segments |
       | System             |
+
+
+  Scenario: login as a given user
+    Given the user is on the login page
+    When the user logs in using following credentials
+      | username  | user10      |
+      | password  | UserUser123 |
+      | firstname | Brenden     |
+      | lastname  | Schneider   |
+    Then the user should be able to login
 
 
   Scenario Outline: login as a given user <user>
@@ -50,3 +61,27 @@ Feature: Contacts page
       | user10         | Brenden   | Schneider |
       | storemanager85 | Stephan   | Haley     |
 
+  @wip @db
+  Scenario: Contacts test with email
+    Given the user logged in as "sales manager"
+    And the user navigates to "Customers" "Contacts"
+    When the user clicks the "mbrackstone9@example.com" from contacts
+    Then the information should be same with database
+
+  @wip @db
+  Scenario: Contacts test with email
+    Given the user logged in as "sales manager"
+    And the user navigates to "Customers" "Contacts"
+    When the user clicks the "mike.jorden@hotmail.com" from contacts
+    Then the information for "mike.jorden@hotmail.com" should be same with database
+  @wip @db
+  Scenario Outline: Contacts Test
+    Given the user logged in as "sales manager"
+    And the user navigates to "Customers" "Contacts"
+    When the user clicks the "<email>" from contacts
+    Then the information for "<email>" should be same with database
+
+    Examples:
+      |email|
+      |mbrackstone9@example.com|
+      |mike.jorden@hotmail.com |
